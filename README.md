@@ -34,7 +34,7 @@ LIVE: https://dzik0.github.io/advice-generator/
 
 - React + TypeScript
 - Fetch API
-- Tailwind CSS (assumed from class names)
+- Tailwind CSS
 - SVG assets for icons and decorative elements
 
 ---
