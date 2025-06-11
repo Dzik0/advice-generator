@@ -1,6 +1,6 @@
 import pattern from '../public/pattern-divider-mobile.svg';
 import iconDice from '../public/icon-dice.svg';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type Msg = {
   id: number;
@@ -17,6 +17,7 @@ type AdviceSlip = {
 function App() {
   const [message, setMessage] = useState<Msg | undefined>();
 
+  /* GOTTA ADD USEEFFECT TO IMPORT BEFORE */
   /*   useEffect(() => {
     getAdvice();
   }, []); */
