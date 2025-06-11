@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import pattern from '../public/pattern-divider-mobile.svg';
+import iconDice from '../public/icon-dice.svg';
+import { useEffect, useState } from 'react';
+
+type Msg = {
+  id: number;
+  advice: string;
+};
+
+type AdviceSlip = {
+  slip: {
+    id: number;
+    advice: string;
+  };
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [message, setMessage] = useState<Msg | undefined>();
+
+  /*   useEffect(() => {
+    getAdvice();
+  }, []); */
+
+  async function getAdvice() {
+    try {
+      const res = await fetch('https://api.adviceslip.com/advice');
+
+      if (!res.ok) {
+        throw new Error(`Res status: ${res.status}`);
+      }
+
+      const data: AdviceSlip = await res.json();
+      setMessage({ id: data.slip.id, advice: data.slip.advice });
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        id: 1,
+        advice: `Can't connect to the server try again later`,
+      });
+    }
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+      <div className="bg-myBlue-900 p-8 rounded-xl grid gap-8 relative max-w-[500px]">
+        <h1 className="text-myGreen-300  text-center text-sm tracking-widest">
+          Advice #{message ? message.id : ''}
+        </h1>
+        <p className="text-center text-myBlue-200 font-bold text-[1.2rem] opacity-100">
+          "{message ? message.advice : `Let's see what the fate holds`}"
         </p>
+
+        <div className="flex justify-center">
+          <img src={pattern} alt="" />
+        </div>
+        <div></div>
+        <button
+          className="bg-myGreen-300 absolute p-2 rounded-[50%] flex justify-center items-center -bottom-5 left-1/2 -translate-x-1/2 w-11 h-11 cursor-pointer hover:bg-green-400"
+          onClick={getAdvice}
+        >
+          <span>
+            <img src={iconDice} alt="" className="w-5" />
+          </span>
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
